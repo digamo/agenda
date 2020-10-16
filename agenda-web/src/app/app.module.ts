@@ -13,8 +13,6 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-
-///////////////////teste
 import { CommonModule } from '@angular/common';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { CdkTreeModule } from '@angular/cdk/tree';
@@ -39,15 +37,16 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatTooltipModule } from '@angular/material/tooltip';
-///////////////////teste
-
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ContactComponent } from './contact/contact.component';
+import { MenuComponent } from './menu/menu.component';
 import { ContactService } from './contact.service';
 import { ContactDetailComponent } from './contact-detail/contact-detail.component';
+import { LayoutModule } from '@angular/cdk/layout';
+import { CalendarComponent } from './calendar/calendar.component';
 
 const materialModules = [
   CdkTreeModule,
@@ -88,7 +87,9 @@ const materialModules = [
   declarations: [
     AppComponent,
     ContactComponent,
-    ContactDetailComponent
+    MenuComponent,
+    ContactDetailComponent,
+    CalendarComponent
   ],
   imports: [
     BrowserModule,
@@ -96,7 +97,13 @@ const materialModules = [
     HttpClientModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    materialModules
+    materialModules,
+    LayoutModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatListModule
   ],
   exports: [
     materialModules
