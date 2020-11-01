@@ -1,1 +1,9 @@
-<p>calendar works!</p>
+<div *ngIf="loadPage">
+<ejs-schedule #scheduleObj 
+[selectedDate]="selectedDate" 
+[views]="scheduleViews"
+[eventSettings]="eventSettings" 
+(actionBegin)="onActionBegin($event)"
+>
+</ejs-schedule>
+</div>

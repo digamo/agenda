@@ -61,8 +61,8 @@ export class ContactComponent implements OnInit {
     this.service.save(c).subscribe( response => {
       this.listContacts();
       this.snacBar.open(
-        'Contato Adicionado',
-        'Sucesso',
+        'Contact Added',
+        'Success',
         {
           duration:2000
         });
@@ -94,6 +94,7 @@ export class ContactComponent implements OnInit {
       console.log("1: " + photo);
       console.log("2: " + contact.id);
       const formData : FormData = new FormData();
+
       //"photo" é o  nome exato do parâmetro esperado pela API no ResquestParam
       formData.append("photo", photo);
       this.service.upload(contact, formData)

@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { Resolver } from './resolver';
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -47,6 +48,8 @@ import { ContactService } from './contact.service';
 import { ContactDetailComponent } from './contact-detail/contact-detail.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { CalendarComponent } from './calendar/calendar.component';
+import { ScheduleModule, RecurrenceEditorModule, DayService, 
+  WeekService, WorkWeekService, MonthService, MonthAgendaService } from '@syncfusion/ej2-angular-schedule';
 
 const materialModules = [
   CdkTreeModule,
@@ -103,13 +106,15 @@ const materialModules = [
     MatButtonModule,
     MatSidenavModule,
     MatIconModule,
-    MatListModule
+    MatListModule,
+    ScheduleModule, RecurrenceEditorModule
   ],
   exports: [
     materialModules
   ],
   providers: [
-    ContactService
+    ContactService, Resolver, DayService, WeekService, WorkWeekService, 
+    MonthService, MonthAgendaService
   ],
   bootstrap: [AppComponent]
 })

@@ -11,7 +11,7 @@ import { environment } from '../environments/environment';
 })
 export class ContactService {
 
-  url : string = environment.apiBaseUrl + "/api/contacts";
+  url : string = environment.apiUrlBase + "/api/contacts";
 
   constructor(
     private http : HttpClient
