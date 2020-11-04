@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { DateFormatPipe } from '../app/common/dateFormatPipe';
 import { Resolver } from './resolver';
 
 import { ReactiveFormsModule } from '@angular/forms';
@@ -92,7 +93,8 @@ const materialModules = [
     ContactComponent,
     MenuComponent,
     ContactDetailComponent,
-    CalendarComponent
+    CalendarComponent,
+    DateFormatPipe
   ],
   imports: [
     BrowserModule,
@@ -107,13 +109,16 @@ const materialModules = [
     MatSidenavModule,
     MatIconModule,
     MatListModule,
-    ScheduleModule, RecurrenceEditorModule
+    ScheduleModule, 
+    RecurrenceEditorModule,
+    
   ],
   exports: [
-    materialModules
+    materialModules,
+    DateFormatPipe
   ],
   providers: [
-    ContactService, Resolver, DayService, WeekService, WorkWeekService, 
+    ContactService, Resolver, DateFormatPipe, DayService, WeekService, WorkWeekService, 
     MonthService, MonthAgendaService
   ],
   bootstrap: [AppComponent]

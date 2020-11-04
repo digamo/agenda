@@ -2,10 +2,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActionEventArgs, AgendaService, DayService, EventFieldsMapping, EventSettingsModel, MonthAgendaService, MonthService, ResourceDetails, Schedule, ScheduleComponent, TimelineMonthService, TimelineViewsService, View, WeekService, WorkWeekService } from '@syncfusion/ej2-angular-schedule';
 import { ButtonComponent } from '@syncfusion/ej2-angular-buttons';
 import { ScheduleCalendar } from './scheduleCalendar';
-import { DataManager } from '@syncfusion/ej2-data';
 import { extend } from '@syncfusion/ej2-base';
 import { ScheduleCalendarService } from '../scheduleCalendar.service';
 import { ActivatedRoute } from '@angular/router';
+import { DateFormatPipe } from '../common/dateFormatPipe';
 
 @Component({
   selector: 'app-calendar',
@@ -28,14 +28,14 @@ export class CalendarComponent implements OnInit {
   public selectedDate: Date = new Date();
   public scheduleViews: View[] = ['Day', 'Week', 'WorkWeek', 'Month'];
   public eventSettings: any;
-
+  
   scheduleCalendar : ScheduleCalendar;
   public schedules : ScheduleCalendar[] = [];
   public loadedSchedule : Object[] = [];
 
   constructor(private service : ScheduleCalendarService, 
     private route: ActivatedRoute,
-    
+    private dateFormatPipe : DateFormatPipe
     ) {
   }
   
@@ -69,24 +69,35 @@ export class CalendarComponent implements OnInit {
   onActionBegin(args: ActionEventArgs): void { 
     
     let isEventChange: boolean = (args.requestType === 'eventChange'); 
+    let isEventCreate: boolean = (args.requestType === 'eventCreate'); 
+    let isEventRemove: boolean = (args.requestType === 'eventRemove'); 
 
-    let eventData: { [key: string]: Object } = (isEventChange) ? args.data as { [key: string]: Object } : 
-    args.data[0] as { [key: string]: Object }; 
+    if(isEventChange || isEventCreate || isEventRemove){
 
-    this.loadScheduleObject(eventData);
+console.log("arg : " + args.data)
 
-    if (isEventChange) {
-      this.loadPage = false;
-      this.updateSchedule();
-      
+      let eventData: { [key: string]: Object };
+      if(isEventChange){
+        eventData = args.data as { [key: string]: Object };
 
-    } else if(args.requestType === 'eventCreate') {
-      this.loadPage = false;
-      this.createSchedule();
-      //location.reload();
+      }else if(isEventCreate || isEventRemove){
+        eventData = args.data[0] as { [key: string]: Object }; 
+      }
 
-    } else if(args.requestType === 'eventRemove'){
-      this.deleteSchedule();
+      this.loadScheduleObject(eventData);
+
+      if (isEventChange) {
+        this.loadPage = false;
+        this.updateSchedule();
+        
+
+      } else if(isEventCreate) {
+        this.loadPage = false;
+        this.createSchedule();
+
+      } else if(isEventRemove){
+        this.deleteSchedule();
+      }
     }
   }
 
@@ -110,8 +121,8 @@ export class CalendarComponent implements OnInit {
       subject,
       location,
       description,
-      startDate,
-      endDate,
+      this.dateFormatPipe.transform(startDate),
+      this.dateFormatPipe.transform(endDate),
       isAllDay,
       recurrenceRule,
       recurrenceException);
@@ -119,8 +130,6 @@ export class CalendarComponent implements OnInit {
 
   createSchedule(){
     this.scheduleCalendar.id = null;
-    console.log(this.scheduleCalendar.startTime);
-    console.log(this.scheduleCalendar.endTime);
 
     let promise = new Promise((resolve, reject) =>{
       this.service.save(this.scheduleCalendar).then(response =>{
@@ -131,6 +140,7 @@ export class CalendarComponent implements OnInit {
       },
       
       msg =>{
+        console.log("Error: " + msg.error);
         reject();
       })
 
@@ -139,6 +149,8 @@ export class CalendarComponent implements OnInit {
   }
 
   updateSchedule(){
+    console.log(this.scheduleCalendar)
+
     let promise = new Promise((resolve, reject) =>{
       this.service.update(this.scheduleCalendar).then(response =>{
         this.schedules = response;
@@ -148,6 +160,7 @@ export class CalendarComponent implements OnInit {
       },
       
       msg =>{
+        console.log("Error: " + msg.error);
         reject();
       })
 
@@ -156,27 +169,11 @@ export class CalendarComponent implements OnInit {
   }
 
   deleteSchedule(){
+    console.log(this.scheduleCalendar)
     this.service.delete(this.scheduleCalendar)
-    .subscribe( response =>{
-      console.log("Sucesso: " + response);
-    }, errorResponse =>{
-      console.log("Sucesso: " + errorResponse.error);
-    });
-  }
-
-  listSchedules() : ScheduleCalendar[]{
-    this.service.getSchedules().subscribe(response =>{
-      this.schedules = response;
-      
-      console.log("resp 1: " + response)
-      console.log("resp 2: " + response.length)
-      console.log("resp 3: " + this.schedules)
-      console.log("resp 4: " + this.schedules.length)
-    })
-
-    return this.schedules;
-  }
-
+    .subscribe( response =>{}
+    , error => console.log("Error: " + error)
+    )};
 
 }
 
