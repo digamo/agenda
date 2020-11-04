@@ -29,7 +29,7 @@ public class ScheduleCalendarDto {
 
 	private String endTime;
    	
-    private boolean isAllDay;
+    private String isAllDay;
    	
    	private String recurrenceRule;
 	
@@ -37,7 +37,7 @@ public class ScheduleCalendarDto {
 
 	public ScheduleCalendar convert() {
 		
-		DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault());
+		DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm", Locale.getDefault());
 		
 		return new ScheduleCalendar(
 				this.id,
@@ -46,7 +46,7 @@ public class ScheduleCalendarDto {
 				this.description,
 				LocalDateTime.parse(this.startTime, inputFormatter),
 				LocalDateTime.parse(this.endTime, inputFormatter),
-				this.isAllDay,
+				Boolean.valueOf(this.isAllDay),
 				this.recurrenceRule,
 				this.recurrenceException
 				);
